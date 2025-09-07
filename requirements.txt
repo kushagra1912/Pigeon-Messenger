@@ -1,0 +1,10 @@
+# This is the dependency file {Put in any Python library being used in the project here}
+requests==2.31.0
+requests==2.31.0
+sqlalchemy==2.0.30
+cryptography==42.0.7
+flask==3.0.2
+flask-sqlalchemy==3.1.1
+psycopg2==2.9.9
+iso8601==2.1.0
+gunicorn

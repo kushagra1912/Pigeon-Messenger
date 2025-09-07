@@ -1,0 +1,84 @@
+workspace "Name" "Description" {
+
+    model {
+        user = person "User" "Someone who uses the Pigeon client."
+        peerUser = person "Peer user" "Peer user who uses the Pigeon client."
+        peer = softwareSystem "Peer Pigeon client" "Another external Pigeon client." {
+            tags "External"
+        }
+        provider = softwareSystem "Cloud Provider" "Provides infrastructure for hosting Pigeon server and data stores."
+        peerUser -> peer "Send and recieve messages"
+        
+        pigeonClient = softwareSystem "Pigeon client" "Peer client application that handles storage and chats." "Docker" {
+            application = container "Pigeon client application" "Implements the logic of the client Pigeon application." {
+                cli = component "CLI frontend" "Handles the frontend CLI logic and view." "Python" {
+                    user -> this "Send and recieve messages"
+                }
+                core = component "Logic core" "Implements the core business and persistence logic of the client Pigeon application." "Python" {}
+                net = component "Network manager" "Handles the communication with the Pigeon server." "Python" {}
+                enc = component "Encryption manager" "Handles encryption and decryption of messages." "Python" {}
+                
+                cli -> core "Uses"
+                core -> net "Uses"
+                core -> enc "Uses"
+            }
+            database = container "Pigeon client database" "Stores the contacts and message history." "SQLite" {
+                tags "Database"
+            }
+            
+            core -> database "Stores & retrieves contacts & message history" "SQLAlchemy"
+        }
+        
+        pigeonServer = softwareSystem "Pigeon server" "Handles sending and recieving of messages between clients." {
+            server = container "Pigeon server application" "Handles sending and recieving of messages between clients." "Docker"
+            db = container "Pigeon server database" "Stores encrypted messages and chat invites until they are pushed." "PostgreSQL" {
+                tags "Database"
+            }
+            
+            server -> db "Store & retrieve requests & messages" "SQLAlchemy"
+        }
+        
+        net -> server "Send & recieve E2EE messages" "HTTPS"
+        peer -> server "Send & recieve E2EE messages" "HTTPS"
+        
+        server -> provider "Defines infrastructure"
+    }
+
+
+    
+    views {
+        systemLandscape pigeonClient {
+            include *
+            autolayout lr
+        }
+        
+        container pigeonClient {
+            include *
+            autolayout lr
+        }
+        
+        container pigeonServer {
+            include *
+            autolayout lr
+        }
+        
+        component application {
+            include *
+            autolayout lr
+        }
+        
+        styles {
+            element "Database" {
+                shape Cylinder
+                background Green
+            }
+            
+            element "External" {
+                background Red
+            }
+        }
+
+        theme default
+    }
+
+}
