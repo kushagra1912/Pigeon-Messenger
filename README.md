@@ -1,8 +1,8 @@
-# P02-Pigeon
+Pigeon Messenger
 
 ## Overview
 
-Pigeon is a secure E2EE instant messaging application. It consists of a client and server subsystem, found in pigeon-client and pigeon-server respectively. Refer to either directory for detailed instructions on how to install, deploy and run each subsystem. A Pigeon server must be running for communication between clients to take place.
+Pigeon is a secure E2EE instant messaging application. It consists of a client and server subsystem, found in pigeon-client and pigeon-server, respectively. Refer to either directory for detailed instructions on how to install, deploy and run each subsystem. A Pigeon server must be running for communication between clients to take place.
 
 ## Team Members
 
@@ -71,5 +71,6 @@ The url for the server is available in `../pigeon-client/client/api.txt`
 ## k6 testing
 
 Located in the `/pigeon-server`
+
 
 `k6 run load.js`
